@@ -15,14 +15,14 @@ def processer(message):
     
 from werobot.contrib.flask import make_view
 
-FATH_TO_CONFIG = '../instance/config.py' # 需要修改
+FATH_TO_CONFIG = '../instance/config.py'
 
 app = Flask(__name__)
 #app.config.from_object('config')
 app.config.from_pyfile(FATH_TO_CONFIG)
 
-app.add_url_rule(rule='/', # WeRoBot 挂载地址
-                 endpoint='werobot', # Flask 的 endpoint
+app.add_url_rule(rule='/',
+                 endpoint='werobot',
                  view_func=make_view(robot),
                  methods=['GET', 'POST'])
 

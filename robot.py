@@ -1,5 +1,6 @@
 from werobot import WeRoBot
 import jieba
+
 robot = WeRoBot(token='tokenhere')
 
 @robot.handler

@@ -39,7 +39,10 @@ def get_target_sentenses_index(user_str,example_strs):#进一步选择
         one_example_words = []
         one_example_pairs = []
         for i in pseg.cut(example_str):
-            one_example_pairs.append((i.word,weight_dict[i.flag]))
+            if (i.flag in weight_dict):
+                one_example_pairs.append((i.word,weight_dict[i.flag]))
+            else:
+                one_example_pairs.append((i.word, DEFAULT_WEIGHT))
             one_example_words.append(i.word)
         all_example_str_words.append(one_example_words)
         one_example_pairs = sorted(one_example_pairs,key=lambda x:x[1],reverse=True)

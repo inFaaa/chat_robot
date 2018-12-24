@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
 from flask_cors import CORS
+
 # robot
 from werobot import WeRoBot
 import jieba
@@ -14,11 +15,12 @@ def processer(message):
     entitys= get_entity(message.content)
     from library.knowledge.models import Knowledge
     all_results = Knowledge.query.filter(Knowledge.k_entity.in_(entitys)).all()
-    indexs = get_target_sentenses_index(message.content,[i.k_title for i in all_results])
+    indexs_weight_pair = get_target_sentenses_index(message.content,[i.k_title for i in all_results])
     answers = []
-    for i in range(len(indexs)):
-        answers.append(all_results[i].k_detail)
-    return  answers[0]
+    for i in range(len(indexs_weight_pair)):
+        answers.append(all_results[indexs_weight_pair[i][0]].k_detail)
+    print(answers)#用于测试
+    return answers[0]
     
 from werobot.contrib.flask import make_view
 

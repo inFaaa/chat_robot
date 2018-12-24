@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
 from flask_cors import CORS
+from sqlalchemy import and_
 
 # robot
 from werobot import WeRoBot
@@ -13,9 +14,10 @@ robot = WeRoBot(token='tokenhere')
 def processer(message):
     from util import get_entity, get_target_sentenses_index
     entitys= get_entity(message.content)
-    entitys = ' '.join(entitys)#数据库中以空格划分
+    sql_words = ['%'+str(e)+'%' for e in entitys]
     from library.knowledge.models import Knowledge
-    all_results = Knowledge.query.filter(Knowledge.k_entity == entitys).all()#这里还要针对查询进行改进
+    rule = and_(*[Knowledge.k_entity.like(w) for w in sql_words])
+    all_results = Knowledge.query.filter(rule).all()#这里还要针对查询进行改进
     indexs_weight_pair = get_target_sentenses_index(message.content,[i.k_title for i in all_results])
     answers = []
     for i in range(len(indexs_weight_pair)):

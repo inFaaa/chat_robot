@@ -6,6 +6,7 @@ weight_dict = {
     "n":1.5,
     "v":1,
 }
+DEFAULT_WEIGHT = 0.5
 
 def get_entity(string):
     pair = pseg.cut(string)
@@ -20,7 +21,10 @@ def get_target_sentenses_index(user_str,example_strs):#进一步选择
     user_str_pos_pair = []
     user_str_words = []
     for i in pseg.cut(user_str):
-        user_str_pos_pair.append((i.word,weight_dict[i.flag]))#二元组比如('TCP',1.5)
+        if(i.flag in weight_dict):
+            user_str_pos_pair.append((i.word,weight_dict[i.flag]))#二元组比如('TCP',1.5)
+        else:
+            user_str_pos_pair.append((i.word, DEFAULT_WEIGHT))  # 二元组比如('TCP',1.5)
 
     #构造用户输入句子的分词列表
     user_str_pos_pair = sorted(user_str_pos_pair,key=lambda x:x[1],reverse=True)
@@ -78,6 +82,3 @@ def get_target_sentenses_index(user_str,example_strs):#进一步选择
             return similarity_set[:3]#top3
         else:
             return similarity_set
-
-def compute_similarity(user_str,example_str):
-    pass

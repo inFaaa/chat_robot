@@ -13,16 +13,17 @@ robot = WeRoBot(token='tokenhere')
 @robot.handler
 def processer(message):
     from util import get_entity, get_target_sentenses_index
-    entitys= get_entity(message.content)
-    sql_words = ['%'+str(e)+'%' for e in entitys]
+
+
+    # entitys= get_entity(message.content)
+    # entitys = ' '.join(entitys)#数据库中以空格划分
     from library.knowledge.models import Knowledge
-    rule = and_(*[Knowledge.k_entity.like(w) for w in sql_words])
-    all_results = Knowledge.query.filter(rule).all()#这里还要针对查询进行改进
+    all_results = Knowledge.query.all()#这里还要针对查询进行改进
     indexs_weight_pair = get_target_sentenses_index(message.content,[i.k_title for i in all_results])
     answers = []
     for i in range(len(indexs_weight_pair)):
         answers.append(all_results[indexs_weight_pair[i][0]].k_detail)
-    print(answers)#用于测试
+    # print(answers)
     return answers[0]
     
 from werobot.contrib.flask import make_view
@@ -49,7 +50,7 @@ api = Api(app)
 # api.add_resource(library.question.resources.QueryQuestionByID, '/api/quesiton/<string: q_id>')
 # api.add_resource(library.question.resources.QueryQuestionByTitle, '/api/quesiton/<string: q_title>')
 api.add_resource(library.question.resources.QueryAllQuestion, '/api/quesiton/all')
-# api.add_resource(library.knowledge.resources.QueryKnowledgeByID, '/api/knowledge/<string: k_id>')
+api.add_resource(library.knowledge.resources.QueryKnowledge, '/api/knowledge')
 # api.add_resource(library.knowledge.resources.QueryKnowledgeByTitle, '/api/knowledge/<string: k_title>')
 api.add_resource(library.knowledge.resources.QueryAllKnowledge, '/api/knowledge/all')
 

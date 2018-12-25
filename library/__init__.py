@@ -20,7 +20,7 @@ def processer(message):
     answers = []
     for i in range(len(indexs_weight_pair)):
         answers.append(all_results[indexs_weight_pair[i][0]].k_detail)
-    print(answers)#用于测试
+    # print(answers)
     return answers[0]
     
 from werobot.contrib.flask import make_view

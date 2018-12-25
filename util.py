@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import jieba
 import jieba.posseg as pseg
 
@@ -62,7 +63,7 @@ def get_target_sentenses_index(user_str,example_strs):#进一步选择
                 break
 
     if(not_found_flag):
-        print("没有找到")#出错处理
+        print("Not Found")#出错处理
         return
     else:
         similarity_set = []

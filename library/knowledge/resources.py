@@ -3,17 +3,24 @@ from flask import request
 
 from library.knowledge.models import Knowledge
 from util import get_entity, get_target_sentenses_index
-   
-class QueryAllKnowledge(Resource):
-    def get(self):
+
+# AddKnowledge
+"""
+POST to add a new knowledge
+POST: { "knowledge": { "q_title": "", "q_type": "", "q_option": "", "q_answer": "" }}
+"""
+class AddKnowledge(Resource):
+    def post(self):
         k = Knowledge()
-        data = Knowledge.query.all()
-
-        if data:
-            return data
-        else:
-            return {'message': 'Error!'}, 500
-
+        parser = reqparse.RequestParser()
+        parser.add_argument('knowledge')
+        args = parser.parse_args()
+        try:
+            k.save(args)
+            return {"message": "Save a new knowledge."}
+        except:
+            return {"message": "Error: Failed to sace a new knowledge."}, 500
+            
 class QueryKnowledge(Resource):
     def post(self):
         data = request.form['data']

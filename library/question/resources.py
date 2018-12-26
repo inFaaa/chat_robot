@@ -1,13 +1,48 @@
-from flask_restful import Resource
+from flask_restful import reqparse, Resource
 from flask import request
 
 from library.question.models import Question
+import json
 
-class QueryAllQuestion(Resource):
-    def get(self):
-        k = Question()
-        data = Question.query.all()
+# AddQuestion
+"""
+POST to add a new question
+POST: { "question": { "q_title": "", "q_type": "", "q_option": "", "q_answer": "" }}
+"""
+class AddQuestion(Resource):
+    def post(self):
+        q = Question()
+        parser = reqparse.RequestParser()
+        parser.add_argument('question')
+        args = parser.parse_args()
+        try:
+            q.save(args)
+            return {"message": "Save a new question."}
+        except:
+            return {"message": "Error: Failed to sace a new question."}, 500
 
+
+# QueryQuestion
+"""
+query some questions with arguments, if no args return all questions
+POST: {"keyword": "", "q_type": "", "q_scope": ""}
+=> { "1": { "q_title": "", "q_type": "", "q_option": "", "q_answer": "" }, "2", {"q_title": "", "q_type": "", "q_option": "", "q_answer": "" }}
+"""
+class QueryQuestion(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('keyword', required=False)
+    parser.add_argument('q_type', required=False)
+    parser.add_argument('q_scope', required=False)
+    def post(self):
+        args = self.parser.parse_args()
+        data = []
+        # select questions by type
+        if args['q_type']:
+            res = Question.query.filter_by(q_type=args['q_type']).all()
+            for x in res:
+                data.append(x.to_json())
+                
+        # select question by keyword
         if data:
             return data
         else:

@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
 from flask_cors import CORS
+from sqlalchemy import and_
 
 # robot
 from werobot import WeRoBot
@@ -12,6 +13,8 @@ robot = WeRoBot(token='tokenhere')
 @robot.handler
 def processer(message):
     from util import get_entity, get_target_sentenses_index
+
+
     # entitys= get_entity(message.content)
     # entitys = ' '.join(entitys)#数据库中以空格划分
     from library.knowledge.models import Knowledge

@@ -2,12 +2,24 @@
 import jieba
 import jieba.posseg as pseg
 
+def load_pairs():
+    #("word",label)
+    return []
+
+def add_to_jieba(pairs):
+    for pair in pairs:
+        jieba.add_word(pair[0],tag=pair[1])
+
 #待完善
 weight_dict = {
-    "n":1.5,
-    "v":1,
+    "n":2.0,
+    'v':1.5,
+    'vn':1.5,
+    'r':1.0,
+    'd':0.4,
+    'm':0.3,
 }
-DEFAULT_WEIGHT = 0.5
+DEFAULT_WEIGHT = 0.3
 
 def get_entity(string):
     pair = pseg.cut(string)

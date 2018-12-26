@@ -43,6 +43,14 @@ class QueryQuestion(Resource):
                 data.append(x.to_json())
                 
         # select question by keyword
+        if args['keyword']:
+            print(args['keyword'])
+            # 使用列表推导来生成 title 中包含 keyword 的问题列表
+            data = [ q for q in data if q['q_title'].find(args['keyword']) != -1]
+
+        # select question by keyword
+        # if args['scope']:
+            
         if data:
             return data
         else:

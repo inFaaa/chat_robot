@@ -3,6 +3,7 @@ bottle==0.12.13
 certifi==2018.10.15
 chardet==3.0.4
 Click==7.0
+et-xmlfile==1.0.1
 Flask==1.0.2
 Flask-Cors==3.0.7
 Flask-RESTful==0.3.6
@@ -10,9 +11,11 @@ Flask-Script==2.0.6
 Flask-SQLAlchemy==2.3.2
 idna==2.7
 itsdangerous==1.1.0
+jdcal==1.4
 jieba==0.39
 Jinja2==2.10
 MarkupSafe==1.1.0
+openpyxl==2.5.12
 pytz==2018.7
 requests==2.20.1
 six==1.11.0

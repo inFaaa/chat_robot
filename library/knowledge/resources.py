@@ -25,7 +25,7 @@ class KnowledgeResolver(Resource):
             k.save(args)
             return {"message": "Save a new knowledge."}
         except:
-            return {"message": "Error: Failed to sace a new knowledge."}, 500
+            return {"message": "Error: Failed to save a new knowledge."}, 500
 
     def get(self):
         parser = reqparse.RequestParser()

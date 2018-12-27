@@ -22,7 +22,7 @@ class QuestionResolver(Resource):
             q.save(args)
             return {"message": "Save a new question."}
         except:
-            return {"message": "Error: Failed to sace a new question."}, 500
+            return {"message": "Error: Failed to save a new question."}, 500
     
     def post(self):
         parser = reqparse.RequestParser()

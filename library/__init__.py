@@ -52,3 +52,4 @@ api.add_resource(QuestionResolver, '/api/quesiton')
 api.add_resource(KnowledgeResolver, '/api/knowledge', '/api/knowledge/<keyword>')
 
 
+

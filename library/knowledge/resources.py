@@ -11,9 +11,7 @@ Request body: { "k_title": "", ... }
 GET to get knowledges by keyword
 Response body: [ { "k_id": 17, ... }, { "k_id": 43, ... } ]
 ---
-TODO: POST to query Knowledges with arguments
-Request body: {}
-Response body: []
+POST to test chatbot
 """
 class KnowledgeResolver(Resource):
     def put(self):
@@ -50,3 +48,18 @@ class KnowledgeResolver(Resource):
             return data
         else:
             return {'message': 'Error!'}, 500
+
+    def post(self):
+        # 测试chatbot
+        from util import get_entity, get_target_sentenses_index
+        parser = reqparse.RequestParser()
+        parser.add_argument('question', required=True)
+        args = parser.parse_args()
+
+        all_results = Knowledge.query.all()
+        indexs_weight_pair = get_target_sentenses_index(args['question'], [i.k_title for i in all_results])
+        answers = []
+        for i in range(len(indexs_weight_pair)):
+            answers.append(all_results[indexs_weight_pair[i][0]].k_detail)
+        # print(answers)
+        return answers[0]

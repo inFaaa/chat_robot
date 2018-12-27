@@ -17,7 +17,7 @@ def add_to_jieba(pairs):
         jieba.add_word(pair[0],tag=pair[1])
 
 ##################filepath###################
-special_words = load_special_words('')
+special_words = load_special_words('./new_sheet.xlsx')
 
 #待完善
 weight_dict = {

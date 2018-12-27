@@ -21,3 +21,13 @@ class Knowledge(db.Model):
             db.session.commit()
         except:
             db.session.rollback()
+
+    def to_json(self):
+        return {
+            'k_id': self.k_id,
+            'k_title': self.k_title,
+            'k_detail': self.k_detail,
+            'k_entity': self.k_entity,
+            'k_scope': self.k_scope,
+            'clicks' : self.clicks
+        }

@@ -42,16 +42,14 @@ app.add_url_rule(rule='/',
 CORS(app, supports_credentials=True,
     allow_headers=["Content-Type", "Authorization", "Access-Control-Allow-Credentials"])
 db = SQLAlchemy(app)
-import library.question.resources
-import library.knowledge.resources
+
+from library.question.resources import QuestionResolver
+from library.knowledge.resources import KnowledgeResolver
 
 api = Api(app)
 
-# api.add_resource(library.question.resources.QueryQuestionByID, '/api/quesiton/<string: q_id>')
-# api.add_resource(library.question.resources.QueryQuestionByTitle, '/api/quesiton/<string: q_title>')
-api.add_resource(library.question.resources.QueryAllQuestion, '/api/quesiton/all')
-api.add_resource(library.knowledge.resources.QueryKnowledge, '/api/knowledge')
-# api.add_resource(library.knowledge.resources.QueryKnowledgeByTitle, '/api/knowledge/<string: k_title>')
-api.add_resource(library.knowledge.resources.QueryAllKnowledge, '/api/knowledge/all')
+api.add_resource(QuestionResolver, '/api/quesiton')
+api.add_resource(KnowledgeResolver, '/api/knowledge', '/api/knowledge/<keyword>')
+
 
 

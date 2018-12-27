@@ -17,7 +17,7 @@ def add_to_jieba(pairs):
         jieba.add_word(pair[0],tag=pair[1])
 
 ##################filepath###################
-special_words = load_special_words()
+special_words = load_special_words('')
 
 #待完善
 weight_dict = {
@@ -91,7 +91,8 @@ def get_target_sentenses_index(user_str,example_strs):#进一步选择
                 break
 
     if(not_found_flag):
-        print("没有找到")#出错处理
+        # TODO: 更科学的报错
+        print("Not Found")#出错处理
         return
     else:
         similarity_set = []

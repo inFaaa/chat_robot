@@ -20,3 +20,15 @@ class Question(db.Model):
 
         db.session.add(self)
         db.session.commit()
+    
+
+    def to_json(self):
+        return {
+            'q_id': self.q_id,
+            'q_title': self.q_title,
+            'q_type': self.q_type,
+            'q_option': self.q_option,
+            'q_answer': self.q_answer,
+            'q_scope': self.q_scope,
+            'clicks': self.clicks
+        }

@@ -1,14 +1,23 @@
-# -*- coding: utf-8 -*-
 import jieba
 import jieba.posseg as pseg
+from openpyxl import load_workbook
 
-def load_pairs():
-    #("word",label)
-    return []
+
+def load_special_words(file_path):
+    wb = load_workbook(filename=file_path)
+    sheet_first = wb.get_sheet_by_name(wb.get_sheet_names()[0])
+    rows = sheet_first.rows
+    words = []
+    for row in rows:
+        words.append(row[0].value)
+    return words
 
 def add_to_jieba(pairs):
     for pair in pairs:
         jieba.add_word(pair[0],tag=pair[1])
+
+##################filepath###################
+special_words = load_special_words()
 
 #待完善
 weight_dict = {
@@ -35,7 +44,10 @@ def get_target_sentenses_index(user_str,example_strs):#进一步选择
     user_str_words = []
     for i in pseg.cut(user_str):
         if(i.flag in weight_dict):
-            user_str_pos_pair.append((i.word,weight_dict[i.flag]))#二元组比如('TCP',1.5)
+            if (i.word in special_words):
+                user_str_pos_pair.append((i.word, weight_dict[i.flag]+0.5))  # 二元组比如('TCP',1.5)
+            else:
+                user_str_pos_pair.append((i.word,weight_dict[i.flag]))#二元组比如('TCP',1.5)
         else:
             user_str_pos_pair.append((i.word, DEFAULT_WEIGHT))  # 二元组比如('TCP',1.5)
 
@@ -53,9 +65,13 @@ def get_target_sentenses_index(user_str,example_strs):#进一步选择
         one_example_pairs = []
         for i in pseg.cut(example_str):
             if (i.flag in weight_dict):
-                one_example_pairs.append((i.word,weight_dict[i.flag]))
+                if (i.word in special_words):
+                    one_example_pairs.append((i.word,weight_dict[i.flag]+0.5))#人为增加权重
+                else:
+                    one_example_pairs.append((i.word, weight_dict[i.flag]))
             else:
                 one_example_pairs.append((i.word, DEFAULT_WEIGHT))
+
             one_example_words.append(i.word)
         all_example_str_words.append(one_example_words)
         one_example_pairs = sorted(one_example_pairs,key=lambda x:x[1],reverse=True)
@@ -75,7 +91,7 @@ def get_target_sentenses_index(user_str,example_strs):#进一步选择
                 break
 
     if(not_found_flag):
-        print("Not Found")#出错处理
+        print("没有找到")#出错处理
         return
     else:
         similarity_set = []

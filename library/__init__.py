@@ -43,15 +43,12 @@ CORS(app, supports_credentials=True,
     allow_headers=["Content-Type", "Authorization", "Access-Control-Allow-Credentials"])
 db = SQLAlchemy(app)
 
-from library.question.resources import AddQuestion, QueryQuestion
-from library.knowledge.resources import AddKnowledge, QueryKnowledge
+from library.question.resources import QuestionResolver
+from library.knowledge.resources import KnowledgeResolver
 
 api = Api(app)
 
-api.add_resource(AddQuestion, '/api/quesiton/add')
-api.add_resource(QueryQuestion, '/api/quesiton/query')
-
-api.add_resource(AddKnowledge, '/api/knowledge/add')
-api.add_resource(QueryKnowledge, '/api/knowledge/query')
+api.add_resource(QuestionResolver, '/api/quesiton')
+api.add_resource(KnowledgeResolver, '/api/knowledge', '/api/knowledge/<keyword>')
 
 

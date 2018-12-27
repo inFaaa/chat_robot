@@ -6,7 +6,7 @@ import json
 
 """
 PUT to add a new question
-Request body:: { "question": { "q_title": "", "q_type": "", "q_option": "", "q_answer": "" }}
+Request body:: { "q_title": "", "q_type": "", "q_option": "", "q_answer": "", "q_scope": "" }
 ---
 POST to query some questions with arguments
 Request body: { "keyword": "", "q_type": "", "q_scope": "" }
@@ -16,7 +16,11 @@ class QuestionResolver(Resource):
     def put(self):
         q = Question()
         parser = reqparse.RequestParser()
-        parser.add_argument('question')
+        parser.add_argument('q_title')
+        parser.add_argument('q_type')
+        parser.add_argument('q_option')
+        parser.add_argument('q_answer')
+        parser.add_argument('q_scope')
         args = parser.parse_args()
         try:
             q.save(args)

@@ -6,7 +6,7 @@ from util import get_entity, get_target_sentenses_index
 
 """
 PUT to add a new knowledge
-Request body: { "knowledge": { "q_title": "", "q_type": "", "q_option": "", "q_answer": "" }}
+Request body: { "k_title": "", ... }
 ---
 GET to get knowledges by keyword
 Response body: [ { "k_id": 17, ... }, { "k_id": 43, ... } ]
@@ -19,7 +19,10 @@ class KnowledgeResolver(Resource):
     def put(self):
         k = Knowledge()
         parser = reqparse.RequestParser()
-        parser.add_argument('knowledge')
+        parser.add_argument('k_title')
+        parser.add_argument('k_detail')
+        parser.add_argument('k_entity')
+        parser.add_argument('k_scope')
         args = parser.parse_args()
         try:
             k.save(args)

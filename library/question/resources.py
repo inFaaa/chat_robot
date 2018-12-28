@@ -2,7 +2,6 @@ from flask_restful import reqparse, Resource
 from flask import request
 
 from library.question.models import Question
-import json
 
 """
 PUT to add a new question
@@ -13,27 +12,34 @@ Request body: { "keyword": "", "q_type": "", "q_scope": "" }
 Response body: { "1": { "q_title": "", "q_type": "", "q_option": "", "q_answer": "" }, "2", {"q_title": "", "q_type": "", "q_option": "", "q_answer": "" }}
 """
 class QuestionResolver(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('q_id', required=False)
+    parser.add_argument('q_title', required=False)
+    parser.add_argument('q_type', required=False)
+    parser.add_argument('q_option', required=False)
+    parser.add_argument('q_answer', required=False)
+    parser.add_argument('keyword', required=False)
+    parser.add_argument('q_type', required=False)
+    parser.add_argument('q_scope', required=False)
     def put(self):
         q = Question()
-        parser = reqparse.RequestParser()
-        parser.add_argument('q_title')
-        parser.add_argument('q_type')
-        parser.add_argument('q_option')
-        parser.add_argument('q_answer')
-        parser.add_argument('q_scope')
-        args = parser.parse_args()
+        args = self.parser.parse_args()
         try:
             q.save(args)
             return {"message": "Save a new question."}
         except:
             return {"message": "Error: Failed to save a new question."}, 500
     
+    def get(self):
+        args = self.parser.parse_args()
+        if args['q_id']:
+            res = Question.query.filter_by(q_id=args['q_id']).first()
+            return res.to_json()
+        else:
+            return {'message': 'Error on get!'}, 500
+
     def post(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('keyword', required=False)
-        parser.add_argument('q_type', required=False)
-        parser.add_argument('q_scope', required=False)
-        args = parser.parse_args()
+        args = self.parser.parse_args()
         data = []
         # 1. select questions by type
         if args['q_type']:
@@ -55,4 +61,6 @@ class QuestionResolver(Resource):
         if data:
             return data
         else:
-            return {'message': 'Error!'}, 500
+            return {'message': 'Error on post!'}, 500
+
+    

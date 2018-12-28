@@ -16,10 +16,8 @@ pip install -r requirements
 
 ```bash
 # 目前 instance 里的 config.py 仅供测试
-python manage.py init
-
-# 如果需要添加少量测试数据的话
-# python manage.py test
+# 若library/db.sqlite 存在则无需初始化数据库
+# python manage.py init
 
 # 运行
 python run.py

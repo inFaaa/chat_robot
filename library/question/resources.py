@@ -13,7 +13,6 @@ Response body: { "1": { "q_title": "", "q_type": "", "q_option": "", "q_answer":
 """
 class QuestionResolver(Resource):
     parser = reqparse.RequestParser()
-    parser.add_argument('q_id', required=False)
     parser.add_argument('q_title', required=False)
     parser.add_argument('q_type', required=False)
     parser.add_argument('q_option', required=False)
@@ -31,9 +30,11 @@ class QuestionResolver(Resource):
             return {"message": "Error: Failed to save a new question."}, 500
     
     def get(self):
+        self.parser.add_argument('q_id', location='args', required=True)
         args = self.parser.parse_args()
         if args['q_id']:
             res = Question.query.filter_by(q_id=args['q_id']).first()
+            
             return res.to_json()
         else:
             return {'message': 'Error on get!'}, 500

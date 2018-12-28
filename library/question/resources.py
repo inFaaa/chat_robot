@@ -38,18 +38,20 @@ class QuestionResolver(Resource):
         # 1. select questions by type
         if args['q_type']:
             res = Question.query.filter_by(q_type=args['q_type']).all()
-            for x in res:
-                data.append(x.to_json())
-                
+        else:
+            res = Question.query.filter(Question.q_title != None).all()
+            
+        for x in res:
+            data.append(x.to_json())    
         # 2. select question by keyword
         if args['keyword']:
             # print(args['keyword'])
             # 使用列表推导来生成 title 中包含 keyword 的问题列表
             data = [ q for q in data if q['q_title'].find(args['keyword']) != -1]
 
-        # TODO: 3. select question by keyword
+        # TODO: 3. select question by scope
         # if args['scope']:
-            
+        
         if data:
             return data
         else:

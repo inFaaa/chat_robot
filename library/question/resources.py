@@ -17,7 +17,6 @@ class QuestionResolver(Resource):
     parser.add_argument('q_type', required=False)
     parser.add_argument('q_option', required=False)
     parser.add_argument('q_answer', required=False)
-    parser.add_argument('keyword', required=False)
     parser.add_argument('q_type', required=False)
     parser.add_argument('q_scope', required=False)
     def put(self):
@@ -30,7 +29,7 @@ class QuestionResolver(Resource):
             return {"message": "Error: Failed to save a new question."}, 500
     
     def get(self):
-        self.parser.add_argument('q_id', location='args', required=True)
+        self.parser.add_argument('q_id', location='args')
         args = self.parser.parse_args()
         if args['q_id']:
             res = Question.query.filter_by(q_id=args['q_id']).first()
@@ -40,6 +39,7 @@ class QuestionResolver(Resource):
             return {'message': 'Error on get!'}, 500
 
     def post(self):
+        self.parser.add_argument('keyword')
         args = self.parser.parse_args()
         data = []
         # 1. select questions by type

@@ -34,7 +34,7 @@ class QuestionResolver(Resource):
         args = self.parser.parse_args()
         if args['q_id']:
             res = Question.query.filter_by(q_id=args['q_id']).first()
-            
+            res.click()
             return res.to_json()
         else:
             return {'message': 'Error on get!'}, 500

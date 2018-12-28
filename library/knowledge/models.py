@@ -22,6 +22,10 @@ class Knowledge(db.Model):
         except:
             db.session.rollback()
 
+    def click(self):
+        self.clicks = self.clicks + 1
+        db.session.commit()
+        
     def to_json(self):
         return {
             'k_id': self.k_id,

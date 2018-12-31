@@ -58,8 +58,12 @@ class KnowledgeResolver(Resource):
 
         all_results = Knowledge.query.all()
         indexs_weight_pair = get_target_sentenses_index(args['question'], [i.k_title for i in all_results])
-        answers = []
-        for i in range(len(indexs_weight_pair)):
-            answers.append(all_results[indexs_weight_pair[i][0]].k_detail)
+        data = []
+        if indexs_weight_pair:
+            for i in range(len(indexs_weight_pair)):
+                data.append(all_results[indexs_weight_pair[i][0]].to_json())
+        else:
+            return "没听懂，可以再说清楚一点吗？"
         # print(answers)
-        return answers[0]
+        answer = "你想问的是不是：" + data[0]['k_title'] + "\n---\n" + data[0]['k_detail']
+        return answer

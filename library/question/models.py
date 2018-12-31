@@ -21,6 +21,9 @@ class Question(db.Model):
         db.session.add(self)
         db.session.commit()
     
+    def click(self):
+        self.clicks = self.clicks + 1
+        db.session.commit()
 
     def to_json(self):
         return {

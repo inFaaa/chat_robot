@@ -15,10 +15,10 @@ weight_dict = {
 }
 DEFAULT_WEIGHT = 0.3
 
-SIMILAR_WORD_PATH = ''
+SIMILAR_WORD_PATH = './similar_words.txt'
 
 def load_similar_dict(path):
-    with open(path,'r') as f:
+    with open(path,'r',encoding='utf-8') as f:
         data = f.readlines()
 
     similar_dict = {}

@@ -12,14 +12,15 @@ robot = WeRoBot(token='tokenhere')
 
 @robot.handler
 def processer(message):
-    from util import get_entity, get_target_sentenses_index
+    from util import get_entity, get_target_sentenses_index, sub_similar_word
 
-
+    string = sub_similar_word(message.content)
+    # string = message.content
     # entitys= get_entity(message.content)
     # entitys = ' '.join(entitys)#数据库中以空格划分
     from library.knowledge.models import Knowledge
     all_results = Knowledge.query.all()#这里还要针对查询进行改进
-    indexs_weight_pair = get_target_sentenses_index(message.content,[i.k_title for i in all_results])
+    indexs_weight_pair = get_target_sentenses_index(string,[i.k_title for i in all_results])
     answers = []
     for i in range(len(indexs_weight_pair)):
         answers.append(all_results[indexs_weight_pair[i][0]].k_detail)

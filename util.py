@@ -1,6 +1,39 @@
 import jieba
 import jieba.posseg as pseg
 from openpyxl import load_workbook
+import re
+
+
+#待完善
+weight_dict = {
+    "n":2.0,
+    'v':1.5,
+    'vn':1.5,
+    'r':1.0,
+    'd':0.4,
+    'm':0.3,
+}
+DEFAULT_WEIGHT = 0.3
+
+SIMILAR_WORD_PATH = ''
+
+def load_similar_dict(path):
+    with open(path,'r') as f:
+        data = f.readlines()
+
+    similar_dict = {}
+    for line in data:
+        temp = line.split('，')
+        similar_dict.update({temp[0] : '|'.join(temp[1:])})  #"区别":"不同|差异|差别"
+    return similar_dict
+
+similar_dict = load_similar_dict(SIMILAR_WORD_PATH)
+
+def sub_similar_word(string):
+    for key in similar_dict.keys():
+        if(re.search(similar_dict[key],string)):
+            string = re.sub(similar_dict[key], key, string)
+    return string
 
 
 def load_special_words(file_path):
@@ -18,17 +51,6 @@ def add_to_jieba(pairs):
 
 ##################filepath###################
 special_words = load_special_words('')
-
-#待完善
-weight_dict = {
-    "n":2.0,
-    'v':1.5,
-    'vn':1.5,
-    'r':1.0,
-    'd':0.4,
-    'm':0.3,
-}
-DEFAULT_WEIGHT = 0.3
 
 def get_entity(string):
     pair = pseg.cut(string)

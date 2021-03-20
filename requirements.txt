@@ -13,7 +13,7 @@ idna==2.7
 itsdangerous==1.1.0
 jdcal==1.4
 jieba==0.39
-Jinja2==2.10
+Jinja2==2.11.3
 MarkupSafe==1.1.0
 openpyxl==2.5.12
 pytz==2018.7

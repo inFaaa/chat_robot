@@ -1,6 +1,6 @@
 aniso8601==4.0.1
 bottle==0.12.13
-certifi==2018.10.15
+certifi==2022.12.7
 chardet==3.0.4
 Click==7.0
 et-xmlfile==1.0.1
